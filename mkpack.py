@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 __author__ = "Joshua Wise <joshua@joshuawise.com>"
 
@@ -35,28 +35,35 @@ def save_pbpack(fname, rsrcs):
     mk_ent.idx = 1
     rsrc_ents = [ mk_ent(data) for data in rsrcs ]
     
-    with open(fname, 'w+') as fd:
-        fd.write(struct.pack('I', len(rsrc_ents))) # Number of resources.
-        # We'll come back to the big CRC later.
-        
-        # Write out the table.
-        fd.seek(TAB_OFS)
-        for ent in rsrc_ents:
-            fd.write(struct.pack('iiiI', ent["idx"], ent["offset"], ent["size"], ent["crc"]))
-        
-        # Write out the resources themselves.
-        for ent in rsrc_ents:
-            fd.seek(RES_OFS + ent["offset"])
-            fd.write(ent["data"])
-        
-        # Now compute the CRC of the whole show.
-        fd.seek(RES_OFS)
-        alldata = fd.read()
-        
-        totlen = fd.tell()
-        
-        fd.seek(4)
-        fd.write(struct.pack('I', crc32(alldata)))
+    if type(fname) == str:
+        fd = open(fname, 'w+b')
+    else:
+        fd = fname
+    
+    fd.write(struct.pack('I', len(rsrc_ents))) # Number of resources.
+    # We'll come back to the big CRC later.
+    
+    # Write out the table.
+    fd.seek(TAB_OFS)
+    for ent in rsrc_ents:
+        fd.write(struct.pack('iiiI', ent["idx"], ent["offset"], ent["size"], ent["crc"]))
+    
+    # Write out the resources themselves.
+    for ent in rsrc_ents:
+        fd.seek(RES_OFS + ent["offset"])
+        fd.write(ent["data"])
+    
+    # Now compute the CRC of the whole show.
+    fd.seek(RES_OFS)
+    alldata = fd.read()
+    
+    totlen = fd.tell()
+    
+    fd.seek(4)
+    fd.write(struct.pack('I', crc32(alldata)))
+    
+    if type(fname) == str:
+        fd.close()
     
     return totlen
 
