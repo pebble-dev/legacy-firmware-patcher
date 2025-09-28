@@ -1,0 +1,16 @@
+Pebble Firmware License Agreement - Copyright Pebble Technology 2015
+
+This software is distributed under the Pebble Terms of Use. Please refer to the full terms: https://auth.getpebble.com/terms_of_use
+
+You may not decompile, reverse engineer, hack, or otherwise modify this software unless you have obtained a free firmware binary license from Pebble Technology.
+
+Please contact the developer support team to request a license: devsupport@getpebble.com
+
+---
+
+Copyright (c) 2018 The Rebble Alliance.
+
+Redistribution of this modified image was permitted by special license from
+Fitbit, but additional derivative works may not be; please do not
+redistribute this binary. 
+
