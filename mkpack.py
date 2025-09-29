@@ -27,10 +27,18 @@ def save_pbpack(fname, rsrcs):
     # First, turn the resource table into a list of entries, including
     # index, offset, size, and CRC.
     def mk_ent(data):
-        ent = { "idx": mk_ent.idx, "offset": mk_ent.offset, "size": len(data), "crc": crc32(data), "data": data }
-        mk_ent.offset += len(data)
+        if data in mk_ent.packed:
+            print(f"resource duplicate: idx {mk_ent.idx}, prev {mk_ent.packed[data]['idx']}, size {len(data)}")
+            offset = mk_ent.packed[data]['offset']
+        else:
+            offset = mk_ent.offset
+            mk_ent.offset += len(data)
+        ent = { "idx": mk_ent.idx, "offset": offset, "size": len(data), "crc": crc32(data), "data": data }
         mk_ent.idx += 1
+        if data not in mk_ent.packed:
+            mk_ent.packed[data] = ent
         return ent
+    mk_ent.packed = {}
     mk_ent.offset = 0
     mk_ent.idx = 1
     rsrc_ents = [ mk_ent(data) for data in rsrcs ]
