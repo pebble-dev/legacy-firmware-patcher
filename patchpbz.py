@@ -85,7 +85,7 @@ if args.tzdata:
             with open(args.tzdata[0], 'rb') as tzf:
                 tzdb = pickle.load(tzf)
             rsrcs[rn] = tzdb.data
-            print(f"replaced resource {rn} length {len(data)} {data[:16]} with new tzdata length {len(rsrcs[rn])} {rsrcs[rn][:16]}, thanks Steve!")
+            print(f"replaced resource {rn} length {len(data)} {data[:16]} with new tzdata length {len(rsrcs[rn])} {rsrcs[rn][:16]}, thanks Joshua!")
 
 new_rfile = io.BytesIO()
 save_pbpack(new_rfile, rsrcs)
